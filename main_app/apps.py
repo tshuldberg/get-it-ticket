@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class Main_appConfig(AppConfig):
+class MainAppConfig(AppConfig):
     name = 'main_app'
