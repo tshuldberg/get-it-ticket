@@ -4,12 +4,47 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 import uuid
 import boto3
-from .models import Ticket, Venue, Event
+from .models import Ticket, Venue, Event, Business
 from .forms import EventForm, TicketForm
 
 
 # Create your views here.
 
+# BUSINESS ------------------------------------------------------------------------------
+
+class BusinessCreate(LoginRequiredMixin, CreateView):
+    model = Business
+    fields = ['name', 'venues']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+class BusinessUpdate(LoginRequiredMixin, UpdateView):
+    model = Business
+    fields = 'venues'
+
+class BusinessDelete(LoginRequiredMixin, DeleteView):
+    model = Business
+    success_url = '/business/'
+
+@login_required
+def business_index(request):
+    business = Business.objects.filter(user = request.user)
+    return render(request, 'business/index.html', {'business': business})
+
+@login_required
+def business_detail(request, business_id):
+    business = Business.objects.get(id=business_id)
+    # venues = Venues.all()?
+    return render(request, 'business/detail.html', {
+        'business': business, 
+        # 'venues': venues 
+    })
+
+
+
+# VENUE ---------------------------------------------------------------------------------
 class VenueCreate(LoginRequiredMixin, CreateView):
     model = Venue
     fields = ['name', 'event']
