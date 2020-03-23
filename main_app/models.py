@@ -21,10 +21,12 @@ class Event(models.Model):
     availability = models.IntegerField()
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
 
-    # add the foreign key relating a ticket to customer
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
 
 class Business(models.Model):
     name = models.CharField(max_length=100)
     # admins = models.What()
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
+
+    # add the foreign key relating a ticket to customer
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
