@@ -2,15 +2,13 @@ from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
 import uuid
 import boto3
 from .models import Ticket, Venue, Event
+from .forms import EventForm, TicketForm
 
 
 # Create your views here.
-def index(request):
-    return HttpResponse("Hello World!")
 
 class VenueCreate(LoginRequiredMixin, CreateView):
     model = Venue
@@ -52,4 +50,11 @@ def venue_detail(request, venue_id):
     })
 
 @login_required
-def add_event(redirect, )
+def add_event(request, venue_id):
+    form = EventForm(request.POST)
+
+    if form.is_valid():
+        new_event = form.save(commit=False)
+        new_event.venue_id = venue_id
+        new_event.save()
+    return redirect('detail', venue_id=venue_id)
