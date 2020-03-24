@@ -22,9 +22,10 @@
         </ul>
         <ul class="right">
           <!-- changes below -->
+
           {% if user.is_authenticated %}
             <!-- Events here or within a Venues view? -->
-
+          {% elif user.is_authenticated %}
           {% else %}
           {% endif %}
         </ul>

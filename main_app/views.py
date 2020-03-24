@@ -1,11 +1,32 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-import uuid
-import boto3
-from .models import Ticket, Venue, Event, Business
-from .forms import EventForm, TicketForm
+# import uuid
+# # import boto3
+# from models import Ticket, Venue, Event, Business
+# from forms import EventForm, TicketForm
+
+# # Create your views here.
+def index(request):
+    return render(request,'home.html')
+
+def signup(request):
+    error_message =''
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('index')
+        else:
+            error_message = "Invalid sign up - try again'"
+    form = UserCreationForm()
+    context = {'form': form, 'error_message' : error_message}
+    return render(request, 'registration/signup.html', context)
 
 
 # Create your views here.
@@ -27,11 +48,6 @@ class BusinessUpdate(LoginRequiredMixin, UpdateView):
 class BusinessDelete(LoginRequiredMixin, DeleteView):
     model = Business
     success_url = '/business/'
-
-# @login_required
-# def business_index(request):
-#     business = Business.objects.filter(user = request.user)
-#     return render(request, 'business/index.html', {'business': business})
 
 @login_required
 def business_detail(request, business_id):
