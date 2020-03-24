@@ -22,19 +22,10 @@
         </ul>
         <ul class="right">
           <!-- changes below -->
-          <li><a href="{% url 'about' %}">About</a></li>
-          {% if user.is_authenticated && user.admin %}
-            <li><a href="{% url '' %}">Add a Venue</a></li>
-            <li><a href="{% url '' %}">View All Venues</a></li>
+          {% if user.is_authenticated %}
             <!-- Events here or within a Venues view? -->
-            <li><a href="{% url '' %}">Add an Event</a></li> 
-            <li><a href="{% url 'index' %}">View All My Events</a></li>
-            <li><a href="{% url 'logout' %}">Log Out</a></li>
-          {% elif user.is_authenticated && !user.admin %}
-            <li><a href="{% url '' %}">None Business Stuff</a></li>
+
           {% else %}
-            <li><a href="{% url 'signup' %}">Sign Up</a></li>
-            <li><a href="{% url 'login' %}">Log In</a></li>
           {% endif %}
         </ul>
       </div>
