@@ -28,10 +28,10 @@ class BusinessDelete(LoginRequiredMixin, DeleteView):
     model = Business
     success_url = '/business/'
 
-@login_required
-def business_index(request):
-    business = Business.objects.filter(user = request.user)
-    return render(request, 'business/index.html', {'business': business})
+# @login_required
+# def business_index(request):
+#     business = Business.objects.filter(user = request.user)
+#     return render(request, 'business/index.html', {'business': business})
 
 @login_required
 def business_detail(request, business_id):
