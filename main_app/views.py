@@ -6,9 +6,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 # import uuid
-# # import boto3
-# from models import Ticket, Venue, Event, Business
-# from forms import EventForm, TicketForm
+# import boto3
+from .models import Ticket, Venue, Event, Business
+from .forms import EventForm, TicketForm
 
 # # Create your views here.
 def index(request):
