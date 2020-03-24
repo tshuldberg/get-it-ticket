@@ -8,9 +8,9 @@ class Ticket(models.Model):
     #constructor 
     seat = models.CharField(max_length=100)
     price = models.IntegerField()
-    event = models.CharField(max_length=100)
     category = models.CharField(max_length=100)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    available = models.BooleanField(default=True)
 
     # add the foreign key relating a ticket to customer
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -27,20 +27,22 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     def get_absolute_url(self):
         return reverse('detail', kwargs={'event_id': self.id})
 
 class Business(models.Model):
     name = models.CharField(max_length=100)
-    venues = models.ManyToManyField(Venue)
     # add the foreign key relating a ticket to customer
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Venue(models.Model):
     name = models.CharField(max_length=100)
     business = models.ForeignKey(Business, on_delete=models.CASCADE)
+    capacity = models.IntegerField()
 
-    # admins = models.What()
-    # event = models.ForeignKey(Event, on_delete=models.CASCADE)
 
+
+#User.admin = models.BooleanField(default=False)
+
+# event = models.ForeignKey(Event, on_delete=models.CASCADE)
