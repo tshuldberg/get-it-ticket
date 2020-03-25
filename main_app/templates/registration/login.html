@@ -1,13 +1,53 @@
-{% extends 'base.html' %}
+{% load static %}
 
-{% block content %}
-<form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" class="btn" value="login">
-    <input type="hidden" name="next" value="{{ next }}">
-</form>
+<!DOCTYPE html>
+<html lang="en">
 
-{% endblock %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Get It Ticket</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/sitewide.css' %}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script defer src="{% static js/scripts.js %}"></script>
+</head>
+
+<body>
+  <header class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper">
+        <ul>
+          <li><a href="/" class="left brand-logo">&nbsp;&nbsp;Get It Ticket</a></li>
+        </ul>
+        <div class="dropdown">
+            <button class="dropdown_btn">Menu</button>
+            <div id="dropDownMenu" class="dropdown_content">
+                <a href="#">Link 1</a>
+                <a href="#">Link 2</a>
+                <a href="#">Link 3</a>
+                <a href="#">Link 4</a>
+            </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main class="container">
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="btn" value="login">
+        <input type="hidden" name="next" value="{{ next }}">
+    </form>
+  </main>
+  <footer class="page-footer">
+    <div class="right">All Rights Reserved, &copy; 2020 Get It Ticket &nbsp;</div>
+  </footer>
+</body>
+
+</html>
+
+
 
     
