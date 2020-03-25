@@ -24,7 +24,8 @@
         <div class="dropdown">
           <button class="dropdown_btn">Menu</button>
           <div id="dropDownMenu" class="dropdown_content">
-              <a href="#">Link 1</a>
+            <li><a href="{% url 'business_create' %}">Add a Business</a></li>
+            <li><a href="{% url 'venue_create' %}">Add a Venue</a></li>
               <a href="#">Link 2</a>
               <a href="#">Link 3</a>
               <a href="#">Link 4</a>
@@ -35,9 +36,13 @@
           
           {% if user.is_authenticated %}
           <li><a href="{% url 'logout' %}">Log Out</a></li>
+
+
+            <!-- Events here or within a Venues view? -->
           {% else %}
-            <li><a href="{% url 'login' %}">Log In</a></li>
-          {% endif %}
+          <li><a href="{% url 'login' %}">Log In</a></li>
+
+            {% endif %}
         </ul>
       </div>
     </nav>
