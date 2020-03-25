@@ -3,22 +3,30 @@ from django.urls import reverse
 from datetime import date
 from django.contrib.auth.models import User
 
-
-
 # Create your models here.
-
 
 class Business(models.Model):
     name = models.CharField(max_length=100)
     # add the foreign key relating a ticket to customer
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse('business_detail', kwargs={'pk': self.id})
+
 
 class Venue(models.Model):
     name = models.CharField(max_length=100)
-    business = models.ForeignKey(Business, on_delete=models.CASCADE)
     capacity = models.IntegerField()
+    business = models.ForeignKey(Business, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse('venues_detail', kwargs={'pk': self.id})
 
 
 class Event(models.Model):
