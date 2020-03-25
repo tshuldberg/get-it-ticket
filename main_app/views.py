@@ -64,9 +64,19 @@ class VenueCreate(LoginRequiredMixin, CreateView):
     model = Venue
     fields = ['name', 'capacity']
 
-    def form_valid(self, form):
+
+    def form_valid(self, form, **kwargs):
         # Assign the logged in user to the venue being created
-        form.instance.user = self.request.user
+        # print("List the request properties: ")
+        # print("================")
+        # print(self.request)
+        # reqStr = str(self.request).split(' ')
+        # print(reqStr)
+        # for item in self.request:
+        #     print("Key:" + str(item))
+        # print("================")
+        business = Business.objects.get(id=kwargs['business_id'])
+        form.instance.business = business
         # Let CreateView's form_valid method do its thing
         return super().form_valid(form)
 
