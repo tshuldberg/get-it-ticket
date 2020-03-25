@@ -5,10 +5,10 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-# import uuid
-# import boto3
+import uuid
+import boto3
 from .models import Ticket, Venue, Event, Business
-from .forms import EventForm, TicketForm
+from .forms import EventForm, TicketForm, VenueForm
 
 # # Create your views here.
 def index(request):
@@ -27,6 +27,7 @@ def signup(request):
     form = UserCreationForm()
     context = {'form': form, 'error_message' : error_message}
     return render(request, 'registration/signup.html', context)
+
 
 
 # Create your views here.
@@ -48,31 +49,49 @@ class BusinessDelete(LoginRequiredMixin, DeleteView):
 @login_required
 def business_detail(request, business_id):
     business = Business.objects.get(id=business_id)
+    venue_form = VenueForm()
     # venues = Venue.objects.get(id=venue_id)
     # venues_business_doesnt_have = Venue.objects.exclude(id__in = business.venues.all().values_list('id'))
 
     # venues = Venues.all()?
     return render(request, 'business/detail.html', {
-        'business': business, 
+        'business': business
         # 'venues': venues 
     })
 
 
 
 # VENUE ---------------------------------------------------------------------------------
+
+# @login_required
+# def venue_create(request, business_id):
+#     form = VenueForm(request.POST)
+
+#     if form.is_valid():
+#         new_venue = form.save(commit=False)
+#         new_venue.business_id = business_id
+#         new_venue.save()
+#     return redirect('business_detail', business_id=business_id)
+
+
+
+
 class VenueCreate(LoginRequiredMixin, CreateView):
     model = Venue
     fields = ['name', 'capacity']
 
     def form_valid(self, form):
-        # Assign the logged in user to the venue being created
-        form.instance.user = self.request.user
+        # Assign the current business to the venue being created
+        print('FORM IS HERE', form)
+        form.instance.business = self.request.POST.get('business')
         # Let CreateView's form_valid method do its thing
         return super().form_valid(form)
 
-class VenueUpdate(LoginRequiredMixin, UpdateView):
-    model = Venue
-    fields = 'capacity'
+# @login_required
+# def venue_create(request, business_id):
+#     business = Business.object.get(id=business_id)
+
+#     return
 
 class VenueDelete(LoginRequiredMixin, DeleteView):
     model = Venue
@@ -86,8 +105,8 @@ class EventCreate(LoginRequiredMixin, CreateView):
     fields = ['name', 'date', 'description', 'ageRestrict', 'ticketCount', 'availability']
 
     def form_valid(self, form):
-        # Assign the logged in user to the event being created
-        form.instance.user = self.request.user
+        # Assign the current venue to the event being created
+        form.instance.venue = self.request.venue
         # Let CreateView's form_valid method do its thing
         return super().form_valid(form)
 

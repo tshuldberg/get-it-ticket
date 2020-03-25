@@ -1,5 +1,10 @@
 from django.forms import ModelForm
-from .models import Event, Ticket
+from .models import Event, Ticket, Venue
+
+class VenueForm(ModelForm):
+  class Meta:
+    model = Venue
+    fields = ['name', 'capacity', 'business']
 
 class EventForm(ModelForm):
   class Meta:

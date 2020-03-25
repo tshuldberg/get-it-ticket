@@ -14,7 +14,7 @@ class Business(models.Model):
         return self.name
     
     def get_absolute_url(self):
-        return reverse('business_detail', kwargs={'pk': self.id})
+        return reverse('business_detail', kwargs={'business_id': self.id})
 
 
 class Venue(models.Model):
@@ -26,7 +26,7 @@ class Venue(models.Model):
         return self.name
     
     def get_absolute_url(self):
-        return reverse('venues_detail', kwargs={'pk': self.id})
+        return reverse('venues_detail', kwargs={'venue_id': self.id})
 
 
 class Event(models.Model):
@@ -47,7 +47,6 @@ class Event(models.Model):
 
 
 class Ticket(models.Model):
-    #constructor 
     seat = models.CharField(max_length=100)
     price = models.IntegerField()
     category = models.CharField(max_length=100)
