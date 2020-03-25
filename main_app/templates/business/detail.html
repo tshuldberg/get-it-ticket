@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>BUS DEETS</h1>
+<h1>{{business.name}}</h1>
+<li><a href="/venue/create/{{business.id}}">Add a Venue</a></li>
 {% endblock %}
