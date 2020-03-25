@@ -35,15 +35,11 @@ def signup(request):
 
 class BusinessCreate(LoginRequiredMixin, CreateView):
     model = Business
-    fields = '__all__'
+    fields = ['name']
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
-
-class BusinessUpdate(LoginRequiredMixin, UpdateView):
-    model = Business
-    fields = 'venues'
 
 class BusinessDelete(LoginRequiredMixin, DeleteView):
     model = Business
@@ -52,6 +48,9 @@ class BusinessDelete(LoginRequiredMixin, DeleteView):
 @login_required
 def business_detail(request, business_id):
     business = Business.objects.get(id=business_id)
+    # venues = Venue.objects.get(id=venue_id)
+    # venues_business_doesnt_have = Venue.objects.exclude(id__in = business.venues.all().values_list('id'))
+
     # venues = Venues.all()?
     return render(request, 'business/detail.html', {
         'business': business, 
@@ -63,21 +62,43 @@ def business_detail(request, business_id):
 # VENUE ---------------------------------------------------------------------------------
 class VenueCreate(LoginRequiredMixin, CreateView):
     model = Venue
-    fields = ['name', 'event']
+    fields = ['name', 'capacity']
 
     def form_valid(self, form):
-        # Assign the logged in user to the cat being created
+        # Assign the logged in user to the venue being created
         form.instance.user = self.request.user
         # Let CreateView's form_valid method do its thing
         return super().form_valid(form)
 
 class VenueUpdate(LoginRequiredMixin, UpdateView):
     model = Venue
-    fields = 'event'
+    fields = 'capacity'
 
 class VenueDelete(LoginRequiredMixin, DeleteView):
     model = Venue
-    success_url = '/venue/'
+    success_url = '/business/'
+
+
+
+# EVENT ---------------------------------------------------------------------------------
+class EventCreate(LoginRequiredMixin, CreateView):
+    model = Event
+    fields = ['name', 'date', 'description', 'ageRestrict', 'ticketCount', 'availability']
+
+    def form_valid(self, form):
+        # Assign the logged in user to the event being created
+        form.instance.user = self.request.user
+        # Let CreateView's form_valid method do its thing
+        return super().form_valid(form)
+
+
+class EventUpdate(LoginRequiredMixin, UpdateView):
+    model = Event
+    fields = ['name', 'date', 'description', 'ageRestrict', 'ticketCount', 'availability']
+
+class EventDelete(LoginRequiredMixin, DeleteView):
+    model = Event
+    success_url = '/venue/events'
 
 def home(request):
     return render(request, 'home.html')
