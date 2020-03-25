@@ -7,7 +7,6 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-
 class Business(models.Model):
     name = models.CharField(max_length=100)
     # add the foreign key relating a ticket to customer

@@ -35,7 +35,7 @@ def signup(request):
 
 class BusinessCreate(LoginRequiredMixin, CreateView):
     model = Business
-    fields = ['name', 'venues']
+    fields = '__all__'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
