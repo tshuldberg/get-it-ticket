@@ -9,8 +9,9 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Get It Ticket</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/sitewide.css' %}">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script defer src="{% static 'js/scripts.js' %}"></script>
 </head>
 
 <body>
@@ -20,13 +21,22 @@
         <ul>
           <li><a href="/" class="left brand-logo">&nbsp;&nbsp;Get It Ticket</a></li>
         </ul>
+        <div class="dropdown">
+          <button class="dropdown_btn">Menu</button>
+          <div id="dropDownMenu" class="dropdown_content">
+              <a href="#">Link 1</a>
+              <a href="#">Link 2</a>
+              <a href="#">Link 3</a>
+              <a href="#">Link 4</a>
+          </div>
+        </div>
         <ul class="right">
           <!-- changes below -->
-
+          
           {% if user.is_authenticated %}
-            <!-- Events here or within a Venues view? -->
-          {% elif user.is_authenticated %}
+          <li><a href="{% url 'logout' %}">Log Out</a></li>
           {% else %}
+            <li><a href="{% url 'login' %}">Log In</a></li>
           {% endif %}
         </ul>
       </div>
