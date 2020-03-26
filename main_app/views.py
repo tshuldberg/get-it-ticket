@@ -6,10 +6,10 @@ from django.urls import reverse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-# import uuid
-# import boto3
+import uuid
+import boto3
 from .models import Ticket, Venue, Event, Business
-from .forms import EventForm, TicketForm
+from .forms import EventForm, TicketForm, VenueForm
 
 # # Create your views here.
 def index(request):
@@ -29,15 +29,10 @@ def signup(request):
     context = {'form': form, 'error_message' : error_message}
     return render(request, 'registration/signup.html', context)
 
-
-# Create your views here.
-
-# BUSINESS ------------------------------------------------------------------------------
-
+# BUSINESS VIEW------------------------------------------------------------------------------
 class BusinessCreate(LoginRequiredMixin, CreateView):
     model = Business
     fields = ['name']
-
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
@@ -50,17 +45,13 @@ class BusinessDelete(LoginRequiredMixin, DeleteView):
 def business_detail(request, business_id):
     business = Business.objects.get(id=business_id)
     venues = Venue.objects.all().filter(business_id=business_id)
-    # venues = Venue.objects.exclude(id__in = business.venues.all().values_list('id'))
 
-    # venues = Venues.all()?
     return render(request, 'business/detail.html', {
         'business': business, 
         'venues': venues, 
     })
 
-
-
-# VENUE ---------------------------------------------------------------------------------
+# VENUE VIEW---------------------------------------------------------------------------------
 class VenueCreate(LoginRequiredMixin, CreateView):
     model = Venue
     fields = ['name', 'capacity']
@@ -72,29 +63,40 @@ class VenueCreate(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('business_detail', kwargs={'business_id': self.kwargs["business_id"]})
 
-class VenueUpdate(LoginRequiredMixin, UpdateView):
-    model = Venue
-    fields = 'capacity'
-
-class VenueDelete(LoginRequiredMixin, DeleteView):
-    model = Venue
-    
-    def success_url(self):
-        return reverse('business_detail', kwargs={'business_id': self.kwargs["business_id"]})
+def venue_delete(request, business_id, venue_id):
+    Venue.objects.get(id=venue_id).delete()
+    return redirect('business_detail', business_id=business_id)
 
 
 
 
-# EVENT ---------------------------------------------------------------------------------
+
+# class VenueDetail(LoginRequiredMixin, DetailView):
+#     model = Venue
+#     def get_success_url(self):
+#         return reverse('venue_detail', kwargs={'venue_id': self.kwargs["venue_id"]})
+
+@login_required
+def venue_detail(request, venue_id, business_id):
+    venue = Venue.objects.get(id=venue_id)
+    event = Event.objects.all().filter(venue_id=venue_id)
+    print('ARE WE ALIVE')
+    return render(request, 'venue/detail.html', {
+        'venue': venue, 
+        'event': event,
+    })
+
+# EVENT VIEWS---------------------------------------------------------------------------------
 class EventCreate(LoginRequiredMixin, CreateView):
     model = Event
     fields = ['name', 'date', 'description', 'ageRestrict', 'ticketCount', 'availability']
 
     def form_valid(self, form):
-        # Assign the logged in user to the event being created
-        form.instance.user = self.request.user
-        # Let CreateView's form_valid method do its thing
-        return super().form_valid(form)
+        form.instance.venue = Venue.objects.get(id=self.kwargs["venue_id"])
+        return super(EventCreate, self).form_valid(form)
+    
+    def get_success_url(self):
+        return reverse('venue_detail', kwargs={'venue_id': self.kwargs["venue_id"]})
 
 
 class EventUpdate(LoginRequiredMixin, UpdateView):
@@ -115,16 +117,6 @@ def about(request):
 def venue_index(request):
     venue = Venue.objects.filter(user = request.user)
     return render(request, 'venue/index.html', {'venue': venue})
-
-@login_required
-def venue_detail(request, venue_id):
-    venue = Venue.objects.get(id=venue_id)
-
-
-    return render(request, 'venue/detail.html', {
-        'venue': venue, 
-        # 'event': eventdetails or all future events
-    })
 
 @login_required
 def add_event(request, venue_id):
