@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from django.contrib.auth import login
+from django.urls import reverse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -48,13 +49,13 @@ class BusinessDelete(LoginRequiredMixin, DeleteView):
 @login_required
 def business_detail(request, business_id):
     business = Business.objects.get(id=business_id)
-    # venues = Venue.objects.get(id=venue_id)
-    # venues_business_doesnt_have = Venue.objects.exclude(id__in = business.venues.all().values_list('id'))
+    venues = Venue.objects.all().filter(business_id=business_id)
+    # venues = Venue.objects.exclude(id__in = business.venues.all().values_list('id'))
 
     # venues = Venues.all()?
     return render(request, 'business/detail.html', {
         'business': business, 
-        # 'venues': venues 
+        'venues': venues, 
     })
 
 
@@ -64,26 +65,12 @@ class VenueCreate(LoginRequiredMixin, CreateView):
     model = Venue
     fields = ['name', 'capacity']
 
-    def get_context_data(self, **kwargs):
-        print(kwargs)
-        if(kwargs):
-            business = BusinessCreate.objects.get(id=kwargs['business_id'])
-            print(business)
-
     def form_valid(self, form):
-        # Assign the logged in user to the venue being created
-        # print("List the request properties: ")
-        # print("================")
-        # print(self.request)
-        # reqStr = str(self.request).split(' ')
-        # print(reqStr)
-        # for item in self.request:
-        #     print("Key:" + str(item))
-        # print("================")
-        # business = Business.objects.get(id=kwargs['business_id'])
-        # form.instance.business = business
-        # Let CreateView's form_valid method do its thing
-        return super().form_valid(form)
+        form.instance.business = Business.objects.get(id=self.kwargs["business_id"])
+        return super(VenueCreate, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('business_detail', kwargs={'business_id': self.kwargs["business_id"]})
 
 class VenueUpdate(LoginRequiredMixin, UpdateView):
     model = Venue
@@ -91,7 +78,10 @@ class VenueUpdate(LoginRequiredMixin, UpdateView):
 
 class VenueDelete(LoginRequiredMixin, DeleteView):
     model = Venue
-    success_url = '/business/'
+    
+    def success_url(self):
+        return reverse('business_detail', kwargs={'business_id': self.kwargs["business_id"]})
+
 
 
 
