@@ -2,10 +2,10 @@
 {% block content %}
 <h1>{{business.name}}</h1>
 {% for venue in venues.all %}
+
 <div>{{venue.name}} &nbsp; &nbsp; &nbsp;Capacity: {{venue.capacity}}&nbsp;&nbsp;
     <a href="{% url 'venue_delete' business.id venue.id %}">Delete</a>
     <a href="{% url 'venue_detail' business.id venue.id %}">View Venue Details</a>
-
 
 </div>
 {% endfor %}

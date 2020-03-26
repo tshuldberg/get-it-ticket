@@ -3,8 +3,8 @@
 .dropdown_btn {
     background-color: white;
     color: black;
-    padding: 16px;
-    font-size: 16px;
+    padding: .9rem;
+    font-size: 1.7rem;
     border: none;
     cursor: pointer;
 }
@@ -19,17 +19,22 @@
     display: none;
     position: absolute;
     background-color: grey;
-    min-width: 160px;
+    min-width: 15rem;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
     z-index: 1;
 }
 
 .dropdown_content a {
     color: black;
-    padding: 2rem 1rem;
+    padding: .4rem .2rem;
     border-bottom: 2px solid black;
     text-decoration: none;
     display: block;
+}
+
+.dropdown_content a:hover {
+    color: black;
+    background-color: white;
 }
 
 .show {

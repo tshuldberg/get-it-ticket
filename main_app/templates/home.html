@@ -2,6 +2,11 @@
 
 {% block content%}
              
-<h1>HOME</h1>
+<h1>Upcoming Events</h1>
+{% for event in events.all %}
+<div>{{event.name}}
+   
+</div>
+{% endfor %}
 
 {% endblock %}

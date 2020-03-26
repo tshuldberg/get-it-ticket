@@ -24,7 +24,9 @@
         <div class="dropdown">
           <button class="dropdown_btn">Menu</button>
           <div id="dropDownMenu" class="dropdown_content">
-            <li><a href="{% url 'business_create' %}">Add a Business</a></li>
+            {% if user.is_authenticated %}
+             <a href="{% url 'business_admin' user.id %}">Manage Businesses</a>
+            {% endif %}
               <a href="#">Link 2</a>
               <a href="#">Link 3</a>
               <a href="#">Link 4</a>
