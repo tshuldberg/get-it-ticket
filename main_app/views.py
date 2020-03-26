@@ -44,20 +44,26 @@ class BusinessDelete(LoginRequiredMixin, DeleteView):
 @login_required
 def business_detail(request, business_id):
     business = Business.objects.get(id=business_id)
-    venue_form = VenueForm()
+    venues = Venue.objects.all().filter(business_id=business_id)
+    # venues = Venue.objects.exclude(id__in = business.venues.all().values_list('id'))
+
+    # venues = Venues.all()?
     return render(request, 'business/detail.html', {
-        'business': business
+        'business': business, 
+        'venues': venues, 
     })
 
 # VENUE VIEW---------------------------------------------------------------------------------
 class VenueCreate(LoginRequiredMixin, CreateView):
     model = Venue
     fields = ['name', 'capacity']
-    success_url = '/'
+
     def form_valid(self, form):
-        # business_id = self.kwargs['business_id']
-        form.instance.business = Business.objects.get(id=self.kwargs['business_id'])
+        form.instance.business = Business.objects.get(id=self.kwargs["business_id"])
         return super(VenueCreate, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('business_detail', kwargs={'business_id': self.kwargs["business_id"]})
 
     def get_success_url(self, form):
         form.instance.business = Business.objects.get(id=self.kwargs['business_id'])
@@ -65,7 +71,10 @@ class VenueCreate(LoginRequiredMixin, CreateView):
 
 class VenueDelete(LoginRequiredMixin, DeleteView):
     model = Venue
-    success_url = '/business/'
+    
+    def success_url(self):
+        return reverse('business_detail', kwargs={'business_id': self.kwargs["business_id"]})
+
 
 @login_required
 def venue_detail(request, venue_id):

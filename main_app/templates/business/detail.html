@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>{{business.name}}</h1>
-<li><a href="/venue/create/{{business.id}}">Add a Venue</a></li>
-
-<div>
-
-
+{% for venue in venues.all %}
+<div>{{venue.name}}
+    <a href="{% url 'venue_delete' venue.id business.id %}">Delete</a>
 </div>
-
+{% endfor %}
+<li><a href="{% url 'venue_create' business.id %}">Add a Venue</a></li>
 {% endblock %}
