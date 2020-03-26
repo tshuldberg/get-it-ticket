@@ -12,7 +12,7 @@ urlpatterns = [
     path('venue/<int:venue:id>/', views.venue_detail, name='venue_detail'),
     path('venue/create/<int:business_id>/', views.VenueCreate.as_view(), name='venue_create'),
     path('venue/<int:pk>/update/', views.VenueUpdate.as_view(), name='venue_update'),
-    path('venue/<int:pk>/delete/', views.VenueDelete.as_view(), name='venue_delete'),
+    path('business/<int:business_id>/venue/<int:venue_id>/delete/', views.VenueDelete.as_view(), name='venue_delete'),
     #event
     
     # path('event/create/', views.EventCreate.as_view(), name='event_create'),

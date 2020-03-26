@@ -79,7 +79,7 @@ class VenueUpdate(LoginRequiredMixin, UpdateView):
 class VenueDelete(LoginRequiredMixin, DeleteView):
     model = Venue
     
-    def success_url(self):
+    def get_success_url(self):
         return reverse('business_detail', kwargs={'business_id': self.kwargs["business_id"]})
 
 
