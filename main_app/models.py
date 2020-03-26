@@ -26,7 +26,7 @@ class Venue(models.Model):
         return self.name
     
     def get_absolute_url(self):
-        return reverse('business_detail', kwargs={'business_id': self.id})
+        return reverse('business_detail', kwargs={'venue_id': self.id, 'business_id': self.business.id})
 
 
 class Event(models.Model):
@@ -42,8 +42,7 @@ class Event(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('detail', kwargs={'event_id': self.id})
-
+        return reverse('event_detail', kwargs={'event_id': self.id, 'venue_id': self.venue.id, 'business_id': self.business.id})
 
 
 class Ticket(models.Model):

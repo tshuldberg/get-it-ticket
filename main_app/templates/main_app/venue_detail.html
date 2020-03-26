@@ -11,7 +11,7 @@
         <p>Capacity: {{ venue.capacity }}</p>
       </div>
       <div class="card-action">
-          <a href="">Add An Event</a>
+          <a href="{% url 'event_create' venue.id %}">Add An Event</a>
 
         
       </div>

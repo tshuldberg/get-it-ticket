@@ -6,8 +6,6 @@ class VenueForm(ModelForm):
     model = Venue
     fields = ['name', 'capacity', 'business']
 
-
-
 class EventForm(ModelForm):
   class Meta:
     model = Event

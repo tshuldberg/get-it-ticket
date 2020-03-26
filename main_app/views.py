@@ -45,9 +45,7 @@ class BusinessDelete(LoginRequiredMixin, DeleteView):
 def business_detail(request, business_id):
     business = Business.objects.get(id=business_id)
     venues = Venue.objects.all().filter(business_id=business_id)
-    # venues = Venue.objects.exclude(id__in = business.venues.all().values_list('id'))
 
-    # venues = Venues.all()?
     return render(request, 'business/detail.html', {
         'business': business, 
         'venues': venues, 
@@ -65,24 +63,27 @@ class VenueCreate(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('business_detail', kwargs={'business_id': self.kwargs["business_id"]})
 
-    def get_success_url(self, form):
-        form.instance.business = Business.objects.get(id=self.kwargs['business_id'])
-        return reverse('/business/', kwargs={'business_id', self.business_id})
+def venue_delete(request, business_id, venue_id):
+    Venue.objects.get(id=venue_id).delete()
+    return redirect('business_detail', business_id=business_id)
 
-class VenueDelete(LoginRequiredMixin, DeleteView):
-    model = Venue
-    
-    def success_url(self):
-        return reverse('business_detail', kwargs={'business_id': self.kwargs["business_id"]})
 
+
+
+
+# class VenueDetail(LoginRequiredMixin, DetailView):
+#     model = Venue
+#     def get_success_url(self):
+#         return reverse('venue_detail', kwargs={'venue_id': self.kwargs["venue_id"]})
 
 @login_required
-def venue_detail(request, venue_id):
+def venue_detail(request, venue_id, business_id):
     venue = Venue.objects.get(id=venue_id)
-
+    event = Event.objects.all().filter(venue_id=venue_id)
+    print('ARE WE ALIVE')
     return render(request, 'venue/detail.html', {
         'venue': venue, 
-        # 'event': eventdetails or all future events
+        'event': event,
     })
 
 # EVENT VIEWS---------------------------------------------------------------------------------
@@ -91,10 +92,12 @@ class EventCreate(LoginRequiredMixin, CreateView):
     fields = ['name', 'date', 'description', 'ageRestrict', 'ticketCount', 'availability']
 
     def form_valid(self, form):
-        # Assign the current venue to the event being created
-        form.instance.venue = self.request.venue
-        # Let CreateView's form_valid method do its thing
-        return super().form_valid(form)
+        form.instance.venue = Venue.objects.get(id=self.kwargs["venue_id"])
+        return super(EventCreate, self).form_valid(form)
+    
+    def get_success_url(self):
+        return reverse('venue_detail', kwargs={'venue_id': self.kwargs["venue_id"]})
+
 
 class EventUpdate(LoginRequiredMixin, UpdateView):
     model = Event
