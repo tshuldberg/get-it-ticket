@@ -7,12 +7,13 @@ urlpatterns = [
     path('', views.home, name='home'),
     #venue
     # path('venue/', views.venue_index, name='venue_index'),
+    path('user/<int:user_id>/businesses/', views.user_show_busnisses, name='business_admin'),
     path('business/', views.BusinessCreate.as_view(), name='business_create'),
     path('business/<int:business_id>/', views.business_detail, name='business_detail'),
     path('venue/<int:venue:id>/', views.venue_detail, name='venue_detail'),
     path('venue/create/<int:business_id>/', views.VenueCreate.as_view(), name='venue_create'),
     path('venue/<int:pk>/update/', views.VenueUpdate.as_view(), name='venue_update'),
-    path('business/<int:business_id>/venue/<int:venue_id>/delete/', views.VenueDelete.as_view(), name='venue_delete'),
+    path('business/<int:business_id>/venue/<int:venue_id>/delete/', views.venue_delete, name='venue_delete'),
     #event
     
     # path('event/create/', views.EventCreate.as_view(), name='event_create'),

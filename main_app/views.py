@@ -12,8 +12,6 @@ from .models import Ticket, Venue, Event, Business
 from .forms import EventForm, TicketForm
 
 # # Create your views here.
-def index(request):
-    return render(request,'home.html')
 
 def signup(request):
     error_message =''
@@ -33,6 +31,10 @@ def signup(request):
 # Create your views here.
 
 # BUSINESS ------------------------------------------------------------------------------
+
+def user_show_busnisses(request, user_id):
+    businesses = Business.objects.all().filter(user_id=user_id)
+    return render(request, 'business/business_admin.html', {'businesses': businesses})
 
 class BusinessCreate(LoginRequiredMixin, CreateView):
     model = Business
@@ -76,11 +78,12 @@ class VenueUpdate(LoginRequiredMixin, UpdateView):
     model = Venue
     fields = 'capacity'
 
-class VenueDelete(LoginRequiredMixin, DeleteView):
-    model = Venue
+def venue_delete(request, business_id, venue_id):
+    Venue.objects.get(id=venue_id).delete()
+    return redirect('business_detail', business_id=business_id)
+
+
     
-    def get_success_url(self):
-        return reverse('business_detail', kwargs={'business_id': self.kwargs["business_id"]})
 
 
 
@@ -106,7 +109,8 @@ class EventDelete(LoginRequiredMixin, DeleteView):
     success_url = '/venue/events'
 
 def home(request):
-    return render(request, 'home.html')
+    events = Event.objects.all().order_by('date')
+    return render(request,'home.html', {'events' : events})
 
 def about(request):
     return render(request, 'about.html')

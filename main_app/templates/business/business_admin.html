@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{user.name}}</h1>
+{% for business in businesses.all %}
+<div>{{business.name}}
+    <a href="{% url 'business_detail' business.id %}">Manage</a>
+</div>
+{% endfor %}
+<a href="{% url 'business_create' %}">Add a Business</a>
+{% endblock %}

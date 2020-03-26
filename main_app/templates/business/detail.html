@@ -3,7 +3,7 @@
 <h1>{{business.name}}</h1>
 {% for venue in venues.all %}
 <div>{{venue.name}}
-    <a href="{% url 'venue_delete' venue_id=venue.id business_id=business.id %}">Delete</a>
+    <a href="{% url 'venue_delete' business.id venue.id %}">Delete</a>
 </div>
 {% endfor %}
 <li><a href="{% url 'venue_create' business.id %}">Add a Venue</a></li>
