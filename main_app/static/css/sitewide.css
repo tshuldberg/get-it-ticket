@@ -1,13 +1,19 @@
-/* Nav bar dropdown menu */
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+  
+  main {
+    flex: 1 0 auto;
+  }
+  
+  footer.page-footer {
+    padding-top: 0;
+    text-align: right;
+  }
 
-.dropdown_btn {
-    background-color: white;
-    color: black;
-    padding: .9rem;
-    font-size: 1.7rem;
-    border: none;
-    cursor: pointer;
-}
+/* Nav bar dropdown menu */
 
 .dropdown {
     position: relative;
@@ -24,9 +30,9 @@
     z-index: 1;
 }
 
-.dropdown_content a {
+.menu_items {
     color: black;
-    padding: .4rem .2rem;
+    background-color: rgba(250,250,250,.8);
     border-bottom: 2px solid black;
     text-decoration: none;
     display: block;
@@ -37,13 +43,88 @@
     background-color: white;
 }
 
-.sign_up {
-    font-size: 2rem;
-}
-
 .show {
     display: block;
 }
 
-/* End Nav dropdown menu */
+.login_in {
+    font-size: 2rem;
+    background: rgba(178,34,34,.6)
+}
 
+/* end dropdown menu styles  */
+
+ /* button style  */
+
+.sign_up {
+    font-size: 2rem;
+}
+
+a.manage_btn {
+    background-color: orange;
+}
+
+a.add_btn {
+    background-color: orange;
+    margin: 1rem;
+}
+
+a.back_btn {
+    font-size: 1.5rem;
+    background-color: orange;
+    margin-left: 2rem;
+}
+
+/* end button styles  */
+
+/* flex code  */
+
+.flex_row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+.justify_left{
+    justify-content: left;
+}
+
+.justify_right {
+    justify-content: right;
+}
+
+/* end flex code  */
+
+/* business tiles */
+.business_banner {
+    font-size: 3rem;
+}
+
+.business_banner_detail {
+    font-size: 5rem;
+}
+
+/* end business tiles */
+
+/* footer  */
+
+.custom_footer {
+    font-size: 2rem;
+}
+
+/* end footer  */
+
+/* Common Page Styles */
+
+.page_header {
+    width: fit-content;
+}
+
+.venue_row {
+    padding: 2rem;
+}
+
+.bottom_spacer {
+    margin-bottom: 2rem;
+}

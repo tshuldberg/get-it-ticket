@@ -2,9 +2,14 @@
 {% block content %}
 <h1>{{user.name}}</h1>
 {% for business in businesses.all %}
-<div>{{business.name}}
-    <a href="{% url 'business_detail' business.id %}">Manage</a>
+<div class="card-panel flex_row ">
+    <div class="business_banner justify_left">
+        {{business.name}}
+    </div>
+    <div class="justify_right">
+        <a class="btn manage_btn" href="{% url 'business_detail' business.id %}">Manage</a>
+    </div>
 </div>
 {% endfor %}
-<a href="{% url 'business_create' %}">Add a Business</a>
+<a class="btn add_btn" href="{% url 'business_create' %}">Add a Business</a>
 {% endblock %}

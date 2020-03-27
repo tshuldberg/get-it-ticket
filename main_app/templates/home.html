@@ -4,9 +4,12 @@
              
 <h1>Upcoming Events</h1>
 {% for event in events.all %}
-<div>{{event.name}}
-   
+<div class="card-panel flex_row ">
+    <div>
+        {{event.name}}
+    </div>
 </div>
 {% endfor %}
 
 {% endblock %}
+
