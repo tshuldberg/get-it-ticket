@@ -37,8 +37,13 @@
     background-color: white;
 }
 
+.sign_up {
+    font-size: 2rem;
+}
+
 .show {
     display: block;
 }
 
 /* End Nav dropdown menu */
+

@@ -30,6 +30,7 @@ def signup(request):
 
 # BUSINESS ------------------------------------------------------------------------------
 
+@login_required
 def user_show_busnisses(request, user_id):
     businesses = Business.objects.all().filter(user_id=user_id)
     return render(request, 'business/business_admin.html', {'businesses': businesses})
@@ -72,18 +73,11 @@ def venue_delete(request, business_id, venue_id):
     Venue.objects.get(id=venue_id).delete()
     return redirect('business_detail', business_id=business_id)
 
-
-# class VenueDetail(LoginRequiredMixin, DetailView):
-#     model = Venue
-#     def get_success_url(self):
-#         return reverse('venue_detail', kwargs={'venue_id': self.kwargs["venue_id"]})
-
 @login_required
 def venue_detail(request, venue_id, business_id):
     venue = Venue.objects.get(id=venue_id)
     events = Event.objects.all().filter(venue_id=venue_id)
     business = Business.objects.get(id=business_id)
-    print('ARE WE ALIVE')
     return render(request, 'venue/detail.html', {
         'venue': venue, 
         'events': events,
@@ -100,7 +94,8 @@ class EventCreate(LoginRequiredMixin, CreateView):
         return super(EventCreate, self).form_valid(form)
     
     def get_success_url(self):
-        return reverse('venue_detail', kwargs={'business_id': self.kwargs["business_id"], 'venue_id': self.kwargs["venue_id"]})
+        return reverse('venue_detail', kwargs={'business_id' : self.kwargs['business_id'],'venue_id': self.kwargs["venue_id"]})
+
 
 
 class EventUpdate(LoginRequiredMixin, UpdateView):
