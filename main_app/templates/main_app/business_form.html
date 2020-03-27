@@ -4,7 +4,14 @@
   {% if object %}
     <h1>Edit <span class="teal-text">{{object.name}}</span></h1>
   {% else %}
-    <h1>Add Business</h1>
+  <div class="flex_row page_header">
+    <div class="business_banner_detail">
+        ADD BUSINESS
+    </div>
+    <div>
+        <a href="{% url 'business_admin' user.id %}" class="btn back_btn">BACK</a>
+    </div>
+</div>
   {% endif %}
   <!-- Leaving the action empty makes the form post to the same url used to display it -->
   <form action="" method="post">

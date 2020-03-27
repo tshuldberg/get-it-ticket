@@ -16,3 +16,4 @@ urlpatterns = [
     # path('event/<int:pk>/delete/', views.EventDelete.as_view(), name='event_delete'),
 ]
 
+         

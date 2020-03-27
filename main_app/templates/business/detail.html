@@ -1,13 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>{{business.name}}</h1>
-{% for venue in venues.all %}
-<div>{{venue.name}} &nbsp; &nbsp; &nbsp;Capacity: {{venue.capacity}}&nbsp;&nbsp;
-    <a href="{% url 'venue_delete' business.id venue.id %}">Delete</a>&nbsp;&nbsp;&nbsp;
-    <a href="{% url 'venue_detail' business.id venue.id %}">View Venue Details</a>
-
+<div class="flex_row page_header">
+    <div class="business_banner_detail">
+        {{business.name}}
+    </div>
+    <div>
+        <a href="{% url 'business_admin' user.id %}" class="btn back_btn">BACK</a>
+    </div>
 </div>
+{% for venue in venues.all %}
+<div>
+    <div class="col s6 col-offset-3">
+      <div class="card">
+        <div class="card-content venue_row">
+            <div class="bottom_spacer">
+                <span class="card-title">{{ venue.name }}</span>
+                <p>Capacity: {{ venue.capacity }}</p>
+            </div>
+            <a class="btn manage_btn" href="{% url 'venue_delete' business.id venue.id %}">Delete</a>&nbsp;&nbsp;&nbsp;
+            <a class="btn manage_btn" href="{% url 'venue_detail' business.id venue.id %}">View Venue Details</a>
+        </div>
+      </div>
+  </div>
 {% endfor %}
-<div></div>
-<li><a href="{% url 'venue_create' business.id %}">Add a Venue</a></li>
+<a class="btn add_btn" href="{% url 'venue_create' business.id %}">Add a Venue</a>
 {% endblock %}
+
