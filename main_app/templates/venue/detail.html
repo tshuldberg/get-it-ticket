@@ -11,10 +11,14 @@
         <p>Capacity: {{ venue.capacity }}</p>
       </div>
       <div class="card-action">
-          <a href="">Add An Event</a>
-
-        
+          <a href="{% url 'event_create'  business.id venue.id%}">Add An Event</a>
       </div>
+        <h1>Upcoming Events</h1>
+        {% for event in events.all %}
+        <div>{{event.name}}
+          
+        </div>
+        {% endfor %}
     </div>
   </div>
 </div>
