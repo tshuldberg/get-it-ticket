@@ -97,6 +97,7 @@ class EventCreate(LoginRequiredMixin, CreateView):
         return reverse('venue_detail', kwargs={'business_id' : self.kwargs['business_id'],'venue_id': self.kwargs["venue_id"]})
 
 
+
 class EventUpdate(LoginRequiredMixin, UpdateView):
     model = Event
     fields = ['name', 'date', 'description', 'ageRestrict', 'ticketCount', 'availability']
