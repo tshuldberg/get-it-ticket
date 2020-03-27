@@ -59,7 +59,7 @@ The newly created event will display on the homepage in the list of upcoming eve
 
 ## Visit Get It Ticket ##
 
-[click here]()
+[click here](https://get-it-ticket.herokuapp.com/)
 
 ## Looking Ahead ##
 
