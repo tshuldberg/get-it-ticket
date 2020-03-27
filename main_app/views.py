@@ -6,8 +6,6 @@ from django.urls import reverse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-import uuid
-import boto3
 from .models import Ticket, Venue, Event, Business
 from .forms import EventForm, TicketForm, VenueForm
 
@@ -69,6 +67,7 @@ class VenueCreate(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('business_detail', kwargs={'business_id': self.kwargs["business_id"]})
 
+@login_required
 def venue_delete(request, business_id, venue_id):
     Venue.objects.get(id=venue_id).delete()
     return redirect('business_detail', business_id=business_id)
@@ -82,11 +81,13 @@ def venue_delete(request, business_id, venue_id):
 @login_required
 def venue_detail(request, venue_id, business_id):
     venue = Venue.objects.get(id=venue_id)
-    event = Event.objects.all().filter(venue_id=venue_id)
+    events = Event.objects.all().filter(venue_id=venue_id)
+    business = Business.objects.get(id=business_id)
     print('ARE WE ALIVE')
     return render(request, 'venue/detail.html', {
         'venue': venue, 
-        'event': event,
+        'events': events,
+        'business': business
     })
 
 # EVENT VIEWS---------------------------------------------------------------------------------
@@ -99,7 +100,7 @@ class EventCreate(LoginRequiredMixin, CreateView):
         return super(EventCreate, self).form_valid(form)
     
     def get_success_url(self):
-        return reverse('venue_detail', kwargs={'venue_id': self.kwargs["venue_id"]})
+        return reverse('venue_detail', kwargs={'business_id': self.kwargs["business_id"], 'venue_id': self.kwargs["venue_id"]})
 
 
 class EventUpdate(LoginRequiredMixin, UpdateView):
